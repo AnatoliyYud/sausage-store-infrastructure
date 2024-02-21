@@ -1,0 +1,7 @@
+frontend_service_user: www-data
+directory_for_frontend: /var/www-data
+frontend_url: https://nexus.k8s.praktikum-services.tech/repository/sausage-store-YudaevAnatoliy-frontend/1.0.635146/sausage-store-1.0.635146.tar.gz
+frontend_group_id: "1.0.635146"
+#frontend_artifact_version: 1.0.633764
+frontend_artifact_id: sausage-store-1.0.635146.tar.gz
+dest_for_tar_frontend: /tmp/sausage-store-frontend.tar.gz

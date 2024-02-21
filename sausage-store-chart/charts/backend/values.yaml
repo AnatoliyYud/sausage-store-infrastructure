@@ -1,0 +1,16 @@
+image: gitlab.praktikum-services.ru:5050/std-016-018/sausage-store/sausage-backend:latest
+replicas: 2
+imagePullPolicy: IfNotPresent
+revisionHistoryLimit: 15
+rollingUpdate:
+  maxUnavailable: 2
+  maxSurge: 20%
+service:
+  port: 8080
+updateMode: "Auto"
+controlledResources:
+  value1: "cpu"
+  value2: "memory"
+environment: production
+ImagePullSecret:
+  name: docker-config-secret

@@ -1,0 +1,69 @@
+---
+# tasks file for sausage-store-backend
+- name: Install Java package
+  become: true
+  apt:
+    name: "openjdk-16-jdk"
+    state: present
+    update_cache: yes
+
+- name: Add backend service user user
+  become: true
+  user:
+    name: "{{backend_service_user}}"
+    create_home: no
+    shell: /sbin/nologin
+
+- name: Install pip
+  become: true
+  apt:
+    name: pip
+    state: present
+
+- name: Install lxml
+  become: true
+  pip:
+    name: lxml
+
+- name: Create directory for backend witn ansible owner
+  become: true
+  file:
+    path: "{{directory_for_backend}}"
+    state: directory
+    owner: ansible
+    mode: "0755"
+
+- name: maven_artifact download from Nexus
+  maven_artifact:
+    dest: "{{dest_for_backend}}"
+    repository_url: "{{backend_repository_url}}"
+    group_id: "{{backend_group_id}}"
+    artifact_id: "{{backend_artifact_id}}"
+    version: "{{backend_artifact_version}}"
+    username: "{{nexus_user}}"
+    password: "{{nexus_password}}"
+
+- name: file chown
+  become: true
+  file:
+    path: "{{dest_for_backend}}"
+    owner: "{{backend_service_user}}"
+    mode: "700"
+
+- name: Ensure Sausage Store Backend service unit
+  become: true
+  template:
+    src: sausage-store-backend.service.j2
+    dest: /etc/systemd/system/sausage-store-backend.service
+
+- name: reload systemd
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: Let's go backend!
+  become: true
+  service:
+    name: sausage-store-backend.service
+    state: started
+    enabled: true

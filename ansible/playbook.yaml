@@ -1,0 +1,11 @@
+
+- name: First play fo sausage-store-backend service
+  hosts: [My_VM]
+  remote_user: ansible 
+  roles: 
+    - sausage-store-backend
+- name: Second play fo sausage-store-frontend service
+  hosts: [My_VM]
+  remote_user: ansible
+  roles:
+    - sausage-store-frontend

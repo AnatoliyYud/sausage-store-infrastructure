@@ -1,0 +1,24 @@
+deploy:
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - cat ${KUBECONFIG} | base64 --decode > ~/.kube/config
+    - export KUBECONFIG=~/.kube/config
+    - cd kubernetes
+    - kubectl apply -f backend/secrets.yaml
+    - kubectl apply -f backend/deployment.yaml
+    - kubectl apply -f backend/service.yaml
+    - kubectl apply -f backend-report/statefulset.yaml
+    - kubectl apply -f frontend/deployment.yaml
+    - kubectl apply -f frontend/service.yaml
+    - kubectl apply -f frontend/ingress.yaml
+    - kubectl apply -f backend-report/hpa.yaml
+    - kubectl apply -f backend/vpa.yaml
+    - rm ~/.kube/config
+  environment:
+    name: staging
+    url: https://std-016-018.k8s.praktikum-services.tech
+  only:
+    changes:
+      - kubernetes/**/*

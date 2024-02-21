@@ -1,0 +1,12 @@
+image: gitlab.praktikum-services.ru:5050/std-016-018/sausage-store/sausage-backend-report:latest
+replicas: 1
+imagePullPolicy: IfNotPresent
+hpa:
+  minReplicas: 1
+  maxReplicas: 5
+  resourcename: cpu
+  targettype: Utilization
+  averageUtilization: 75
+environment: production
+ImagePullSecret:
+  name: docker-config-secret

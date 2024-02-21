@@ -1,0 +1,16 @@
+[Unit]
+Description=My sausage-store
+
+
+[Service]
+User={{backend_service_user}}
+WorkingDirectory={{directory_for_backend}}
+ExecStart=/usr/bin/java -jar {{dest_for_backend}}
+Restart=on-failure
+#Environment="LOG_PATH=/"
+#Environment="REPORT_PATH=/var/www-data/htdocs/"
+#StandardOutput=append:/opt/log/sausage-store-backend.log
+#StandardError=append:/opt/log/sausage-store-backend.log
+
+[Install]
+WantedBy=multi-user.target

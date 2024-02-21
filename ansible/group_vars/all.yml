@@ -1,0 +1,3 @@
+ansible_connection: ssh
+nexus_password: gd18T5pO
+nexus_user: std-016-018

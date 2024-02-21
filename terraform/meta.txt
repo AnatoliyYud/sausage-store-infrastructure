@@ -1,0 +1,9 @@
+#cloud-config
+users:
+  - name: ansible
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA6cxm6daCWTjI30m339vxGWoQrRsZbSxOreJlgIBSSP student@fhmiu7ce2clcgc5o3hep
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMVRIQxbUMGYGXKOcXhjF+sd5nk5AL827ZwvqAhdgMHB keys_for GitLab

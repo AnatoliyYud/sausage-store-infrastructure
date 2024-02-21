@@ -1,0 +1,3 @@
+std016-018-res http://std-016-18.praktikum-services.tech/  my main VM
+anatoliy-yudaev-24-07-backup 158.160.62.130 VM for backup
+#note that public IP 158.160.62.130 (for backup VM) will be new after VM restart. So tomorrow other IP will be here.

@@ -1,0 +1,11 @@
+/opt/log/sausage-store-backend.log {
+  size 10M
+  hourly
+  rotate 3
+  compress
+  delaycompress
+  missingok
+  postrotate
+      /bin/echo 'Logrotate for sausage-store-backend.conf completed at '$(date "+%Y-%m-%d %H:%M:%S")'' >> /opt/log/student_rotate.log
+  endscript
+}

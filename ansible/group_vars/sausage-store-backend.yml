@@ -1,0 +1,9 @@
+nexus_password: gd18T5pO
+nexus_user: std-016-018
+backend_repository_url: https://nexus.k8s.praktikum-services.tech/repository/sausage-store-YudaevAnatoliy-backend
+backend_group_id: com.yandex.practicum.devops
+backend_artifact_id: sausage-store
+backend_artifact_version: 1.0.633764
+dest_for_backend: /var/jarservice/sausage-store.jar
+backend_service_user: jarservice
+directory_for_backend: /var/jarservice

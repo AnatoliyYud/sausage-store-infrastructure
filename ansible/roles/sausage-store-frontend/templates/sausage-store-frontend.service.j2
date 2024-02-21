@@ -1,0 +1,14 @@
+[Unit]
+Description=My sausage-store-frontend
+
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www-data
+ExecStart=http-server ./frontend/ -p 3000 --proxy http://localhost:8080
+Restart=on-failure
+StandardOutput=inherit
+
+[Install]
+WantedBy=multi-user.target

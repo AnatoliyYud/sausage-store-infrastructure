@@ -1,0 +1,90 @@
+---
+# tasks file for sausage-store-frontend
+- name: Install ca-certificates, curl, gnupg packages
+  become: true
+  apt:
+    update_cache: yes
+    name: "{{item}}"
+    state: present
+  with_items:
+    - ca-certificates
+    - curl
+    - gnupg
+
+- name: Add NodeJS GPG key
+  become: true
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+    state: present
+
+- name: Set up the repository
+  become: true
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_16.x nodistro main
+    state: present
+    update_cache: yes
+
+- name: install NodeJS
+  become: true
+  apt:
+    name: nodejs
+    update_cache: yes
+
+- name: Add frontend service user user
+  become: true
+  user:
+    name: "{{frontend_service_user}}"
+    create_home: no
+    shell: /sbin/nologin
+
+- name: Add frontend service group
+  group:
+    name: "{{frontend_service_user}}"
+    state: present
+
+- name: Create directory for frontend witn frontend_service_user owner
+  become: true
+  file:
+    path: "{{directory_for_frontend}}"
+    state: directory
+    owner: "{{frontend_service_user}}"
+    group: "{{frontend_service_user}}"
+    mode: "0755"
+
+- name: frontend download from Nexus
+  become: true
+  get_url:
+    dest: "{{dest_for_tar_frontend}}"
+    url: "{{frontend_url}}"
+    url_username: "{{nexus_user}}"
+    url_password : "{{nexus_password}}"
+    owner: "{{frontend_service_user}}"
+    group: "{{frontend_service_user}}"
+    mode: "770"
+
+- name: Unarchive tar.gz file
+  become: true
+  shell: tar -xvf {{dest_for_tar_frontend}} -C {{directory_for_frontend}} 
+
+- name: Chown for frontend
+  become: true
+  shell: chown -R {{frontend_service_user}}:{{frontend_service_user}} {{unarchived_frontend}}
+
+- name: Ensure Sausage Store Backend service unit
+  become: true
+  template:
+    src: sausage-store-frontend.service.j2
+    dest: /etc/systemd/system/sausage-store-frontend.service
+
+- name: reload systemd
+  become: true
+  systemd:
+    daemon_reload: yes
+
+
+
+#  unarchive:
+#    dest: "{{directory_for_frontend}}"
+#    src: /var/ww-data/sausage-store-1.0.635146.tar.gz
+#    owner: "{{frontend_service_user}}"
+#    group: "{{frontend_service_user}}"
